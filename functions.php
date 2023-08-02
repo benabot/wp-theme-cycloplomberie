@@ -111,6 +111,23 @@ function cyclotheme_register_scripts() // TODO : 1.penser à minifier pour prod 
         true
     );
 
+    //** SVELTE   **/
+    if (is_page('contact')) {
+        wp_enqueue_script(
+            'sveltejs',
+            get_template_directory_uri() . '/assets/index-97748540.js',
+            array(),
+            '1.0',
+            true
+        );
+        wp_enqueue_style(
+            'sveltecss',
+            get_template_directory_uri() . "/assets/index-03f5c02e.css",
+            array(),
+            '1.0',
+            'all'
+        );
+    }
     //** NETTOYAGE */
     wp_deregister_script('wp-embed');
     remove_action('wp_head', 'print_emoji_detection_script', 7);
@@ -149,17 +166,17 @@ function cyclotheme_widgets_init()
             'after_title'   => '</h3>',
         )
     );
-    register_sidebar(
-        array(
-            'name'          => esc_html__('Barre latérale', 'cyclotheme'),
-            'id'            => 'sidebar-1',
-            'description'   => esc_html__('Add widgets here to appear in your sidebar.', 'cyclotheme'),
-            'before_widget' => '<section id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</section>',
-            'before_title'  => '<h3 class="widget-title">',
-            'after_title'   => '</h3>',
-        )
-    );
+    // register_sidebar(
+    //     array(
+    //         'name'          => esc_html__('Barre latérale', 'cyclotheme'),
+    //         'id'            => 'sidebar-1',
+    //         'description'   => esc_html__('Add widgets here to appear in your sidebar.', 'cyclotheme'),
+    //         'before_widget' => '<section id="%1$s" class="widget %2$s">',
+    //         'after_widget'  => '</section>',
+    //         'before_title'  => '<h3 class="widget-title">',
+    //         'after_title'   => '</h3>',
+    //     )
+    // );
 }
 add_action('widgets_init', 'cyclotheme_widgets_init');
 
@@ -205,6 +222,17 @@ function fix_svg()
 }
 add_action('admin_head', 'fix_svg');
 
+/**
+ * Filter the except length to 20 words.
+ *
+ * @param int $length Excerpt length.
+ * @return int (Maybe) modified excerpt length.
+ */
+function wpdocs_custom_excerpt_length($length)
+{
+    return 20;
+}
+add_filter('excerpt_length', 'wpdocs_custom_excerpt_length', 999);
 
 
 /**
